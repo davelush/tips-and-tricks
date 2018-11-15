@@ -12,6 +12,6 @@ All this does though, is set your global username and email address. If you do t
 ```commandline
 git config user.email "dave.lush@gmai.com"
 git config user.name "davelush"
-doh! what is the credential command?
+git config credential.username "davelush"
 ```
 
