@@ -14,4 +14,4 @@ git config user.email "dave.lush@gmai.com"
 git config user.name "davelush"
 git config credential.username "davelush"
 ```
-
+A key thing here is to set your credential username here. Assuming you've got credentials to go with the username in your keychain you are now golden! No more changing global usernames and no more passwords.
