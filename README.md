@@ -12,6 +12,6 @@ All this does though, is set your global username and email address. If you do t
 ```commandline
 git config user.email "dave.lush@gmai.com"
 git config user.name "davelush"
-git config credential.username "davelush"
 ```
-A key thing here is to set your credential username here. Assuming you've got credentials to go with the username in your keychain you are now golden! No more changing global usernames and no more passwords.
+
+In order to make this work smooth like butter, don't be lazy... Make sure you [connect to GitHub with SSH](https://help.github.com/articles/connecting-to-github-with-ssh/).
