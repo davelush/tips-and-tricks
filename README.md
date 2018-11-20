@@ -31,3 +31,5 @@ Simple fix (assuming a single user MacBook) is to create and take ownership of a
 sudo mkdir -p /usr/local/include /usr/local/lib /usr/local/opt /usr/local/sbin /usr/local/Cellar
 sudo chown -R $(whoami) /usr/local/include /usr/local/lib /usr/local/opt /usr/local/sbin /usr/local/Cellar
 ```
+
+Adding something to check
