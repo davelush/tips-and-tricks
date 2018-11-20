@@ -15,3 +15,19 @@ git config user.name "davelush"
 ```
 
 In order to make this work smooth like butter, don't be lazy... Make sure you [connect to GitHub with SSH](https://help.github.com/articles/connecting-to-github-with-ssh/).
+
+### Fixing permissions issues with Homebrew
+
+When installing tools via homebrew on MacOs you may run into errors such as the following
+
+```commandline
+Error: An exception occurred within a child process:
+  Errno::EPERM: Operation not permitted @ dir_s_mkdir - /usr/local/Cellar
+``` 
+
+Simple fix (assuming a single user MacBook) is to create and take ownership of all them beautiful Cellars
+
+```commandline
+sudo mkdir -p /usr/local/include /usr/local/lib /usr/local/opt /usr/local/sbin /usr/local/Cellar
+sudo chown -R $(whoami) /usr/local/include /usr/local/lib /usr/local/opt /usr/local/sbin /usr/local/Cellar
+```
