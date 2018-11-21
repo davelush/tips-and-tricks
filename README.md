@@ -3,26 +3,48 @@ A collection of tips and tricks for developers
 
 ### Working with Multiple GitHub Accounts
 
-~~If, like me you use your work laptop for both work & home coding you probably commit against multiple GitHub accounts. Beyond the obvious splitting repositories into different working directories for work & home you also want to commit against different sets of credentials. As soon as you google around on changing accounts you'll probably see commands such as in the initial Google hits;~~
+If, like me you use your work laptop for both work & home coding you probably commit against multiple GitHub accounts. This can bring headache of `oops.. I accidentally committed to my personal GitHub with my work account!`. Check the commit history on this respostiry and you'll see I've been going through exactly this pain :) After a fair amount of trial, error and reading the best solution I've found is as follows;
+
+* Use SSH for both accounts
+* Use a slightly non-standard hostname on checkout to select the correct SSH key
+
+In detail;
+
+1. Change directory to ssh configuration location
 ```commandline
-git config --global user.email "dave.lush@gmai.com"
-git config --global user.name "davelush"
+cd ~/.ssh
 ```
-~~All this does though, is set your global username and email address. If you do this you'll find yourself constantly running commands to flip between account. You also don't solve the credential problem. Better is to change directory to the repository you're interested in and do the following;~~
+2. Generate a keypair for each account you are working with. E.g.
 ```commandline
-git config user.email "dave.lush@gmai.com"
-git config user.name "davelush"
+ssh-keygen -t rsa -C "davelush" -f "davelush"
 ```
-
-Use this to clean up and improve this section (enormously) https://www.keybits.net/post/automatically-use-correct-ssh-key-for-remote-git-repo/
-
-Key thing being the git clone with a username that ties up with the ssh config
-
+3. Make sure your ssh-agent is running
 ```commandline
-git clone git@github.com-davelush:davelush/tips-and-tricks.git
+eval "$(ssh-agent -s)"
 ```
+4. Make each private key available to your SSH agent. E.g.
+```commandline
+ssh-add -K ~/.ssh/davelush
+``` 
+5. Add each public key to the relevant account using [GitHub's documentation](https://help.github.com/articles/adding-a-new-ssh-key-to-your-github-account)
+6. Configure SSH to use the correct identity for the each GitHub account by editing `~/.ssh/config` as follows. 
+```commandline
+Host github.com-work
+ UseKeychain yes
+ User git
+ HostName github.com
+ IdentityFile ~/.ssh/work-davelush
 
-In order to make this work smooth like butter, don't be lazy... Make sure you [connect to GitHub with SSH](https://help.github.com/articles/connecting-to-github-with-ssh/).
+Host github.com-home
+ UseKeychain yes
+ User git
+ HostName github.com
+ IdentityFile ~/.ssh/davelush
+```
+7. Next time you clone a Git repo, use the SSH url and add either home or work to github.com to select the correct identity. E.g.
+```commandline
+git clone git@github.com-home:davelush/tips-and-tricks.git
+```
 
 ### Fixing permissions issues with Homebrew
 
