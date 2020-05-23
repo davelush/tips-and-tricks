@@ -25,25 +25,34 @@ eval "$(ssh-agent -s)"
 4. Make each private key available to your SSH agent. E.g.
 ```commandline
 ssh-add -K ~/.ssh/davelush
-``` 
+```
 5. Add each public key to the relevant account using [GitHub's documentation](https://help.github.com/articles/adding-a-new-ssh-key-to-your-github-account)
-6. Configure SSH to use the correct identity for the each GitHub account by editing `~/.ssh/config` as follows. 
+6. Configure SSH to use the correct identity for the each GitHub account by editing `~/.ssh/config` as follows.
 ```commandline
 Host github.com-work
  UseKeychain yes
  User git
  HostName github.com
  IdentityFile ~/.ssh/work-davelush
+ IdentitiesOnly yes
 
 Host github.com-home
  UseKeychain yes
  User git
  HostName github.com
  IdentityFile ~/.ssh/davelush
+ IdentitiesOnly yes
 ```
 7. Next time you clone a Git repo, use the SSH url and add either home or work to github.com to select the correct identity. E.g.
 ```commandline
 git clone git@github.com-home:davelush/tips-and-tricks.git
+```
+
+8. As a final piece. In order to get the committer right file in the following in the repository's `.git/config`. (note the @github.com email address)
+```
+[user]
+	name = davelush
+	email = davelush@github.com
 ```
 
 ### Fixing permissions issues with Homebrew
@@ -53,7 +62,7 @@ When installing tools via homebrew on MacOs you may run into errors such as the 
 ```commandline
 Error: An exception occurred within a child process:
   Errno::EPERM: Operation not permitted @ dir_s_mkdir - /usr/local/Cellar
-``` 
+```
 
 Simple fix (assuming a single user MacBook) is to create and take ownership of all them beautiful Cellars
 
