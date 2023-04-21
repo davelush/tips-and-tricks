@@ -10,38 +10,21 @@ If, like me you use your work laptop for both work & home coding you probably co
 
 In detail;
 
-1. Change directory to ssh configuration location
+1. Follow this documentation to [generate a new SSH key and add it to the ssh agent](https://docs.github.com/en/authentication/connecting-to-github-with-ssh/generating-a-new-ssh-key-and-adding-it-to-the-ssh-agent). Do this for both of your accounts.
+2. Follow this documentation to [add the SSH key in each of your accounts](https://docs.github.com/en/authentication/connecting-to-github-with-ssh/adding-a-new-ssh-key-to-your-github-account)
+3. Configure SSH to use the correct identity for the each GitHub account by editing `~/.ssh/config` as follows.
 ```commandline
-cd ~/.ssh
-```
-2. Generate a keypair for each account you are working with. E.g.
-```commandline
-ssh-keygen -t rsa -C "davelush" -f "davelush"
-```
-3. Make sure your ssh-agent is running
-```commandline
-eval "$(ssh-agent -s)"
-```
-4. Make each private key available to your SSH agent. E.g.
-```commandline
-ssh-add -K ~/.ssh/davelush
-```
-5. Add each public key to the relevant account using [GitHub's documentation](https://help.github.com/articles/adding-a-new-ssh-key-to-your-github-account)
-6. Configure SSH to use the correct identity for the each GitHub account by editing `~/.ssh/config` as follows.
-```commandline
-Host github.com-work
- UseKeychain yes
- User git
- HostName github.com
- IdentityFile ~/.ssh/work-davelush
- IdentitiesOnly yes
-
-Host github.com-home
- UseKeychain yes
- User git
- HostName github.com
- IdentityFile ~/.ssh/davelush
- IdentitiesOnly yes
+# Default github account: work
+Host github.com
+   HostName github.com
+   IdentityFile ~/.ssh/dave_work_private_key
+   IdentitiesOnly yes
+   
+# Other github account: home
+Host github-home
+   HostName github.com
+   IdentityFile ~/.ssh/dave_home_private_key
+   IdentitiesOnly yes
 ```
 7. Next time you clone a Git repo, use the SSH url and add either home or work to github.com to select the correct identity. E.g.
 ```commandline
